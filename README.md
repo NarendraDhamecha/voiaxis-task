@@ -18,6 +18,13 @@ Ensure you have the following installed on your machine:
 
 
 ### Instructions
+
+## Start with automated bash script
+- Navigate to the root folder (`voiaxis-task`).
+- Make the script executable `chmod +x start.sh`
+- Run the script `./start.sh`
+
+## Start manually
 - Navigate to the respective folders (`frontend`, `backend`).
 - Install dependencies using `npm install`.
 - Copy `.env` files provided via email into both folders.
