@@ -19,10 +19,9 @@ const AdvertisementDetails = ({
 }) => {
   const handleApprove = async () => {
     try {
-      const response = await axiosInstance.patch(
-        `/advertisement/${selectedAd._id}`,
-        { status: "Approved" }
-      );
+      await axiosInstance.patch(`/advertisement/${selectedAd._id}`, {
+        status: "Approved",
+      });
       toast.success("Advertisement approved");
       fetchAdvertisements();
       handleCloseModal();
@@ -33,11 +32,10 @@ const AdvertisementDetails = ({
 
   const handleReject = async () => {
     try {
-      const response = await axiosInstance.patch(
-        `/advertisement/${selectedAd._id}`,
-        { status: "Rejected" }
-      );
-      toast.success("Advertisement rejectedu");
+      await axiosInstance.patch(`/advertisement/${selectedAd._id}`, {
+        status: "Rejected",
+      });
+      toast.success("Advertisement rejected");
       fetchAdvertisements();
       handleCloseModal();
     } catch (error) {
@@ -49,10 +47,9 @@ const AdvertisementDetails = ({
     const updateAdvertisement = async () => {
       if (selectedAd.isReviewed) return;
       try {
-        const response = await axiosInstance.patch(
-          `/advertisement/${selectedAd._id}`,
-          { isReviewed: true }
-        );
+        await axiosInstance.patch(`/advertisement/${selectedAd._id}`, {
+          isReviewed: true,
+        });
         toast.success("Advertisement reviewed");
         fetchAdvertisements();
       } catch (error) {

@@ -22,18 +22,6 @@ exports.updateUser = async (req, res) => {
     const { userId } = req.params; // Get user ID from request parameters
     const updateData = req.body; // Get update data from request body
 
-    // Check if the user is updating the email
-    if (updateData.email) {
-      const emailDomain = updateData.email.substring(
-        updateData.email.lastIndexOf("@")
-      );
-
-      // If the email domain is @voiaxismoderator.com, add specific permissions
-      if (emailDomain === "@voiaxismoderator.com") {
-        updateData.permissions = [1001];
-      }
-    }
-
     // Find user by ID and update the provided fields
     const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
       new: true, // Return the updated document

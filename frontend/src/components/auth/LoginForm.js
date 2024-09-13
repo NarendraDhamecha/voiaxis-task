@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Box, CircularProgress } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";
-import axiosInstance from "../../config/axiosInstance";
-import { useNavigate } from "react-router-dom";
-import { getUser } from "../../utils/_helpers";
-import { toast } from "react-toastify";
 
-const LoginForm = ({ handleGoogleSignIn }) => {
+const LoginForm = ({ handleGoogleSignIn, handleLogin }) => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   // Handle input changes for Login form
   const handleLoginChange = (event) => {
@@ -20,23 +21,15 @@ const LoginForm = ({ handleGoogleSignIn }) => {
     }));
   };
 
-  // Handle Login form submission
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    setLoading(true); // Set loading to true when login starts
+  // Handle Login
+  const handleLoginCall = async (event) => {
+    setLoading(true);
     try {
-      const response = await axiosInstance.post("auth/login", loginData);
-      localStorage.setItem("token", response.data.token);
-      const { role } = getUser(response.data.token);
-      if (role === "User") {
-        navigate("/user/create-advertisement");
-      } else {
-        navigate("/user/admin/dashboard");
-      }
+      await handleLogin(event, loginData);
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log("Error while log in", error);
     } finally {
-      setLoading(false); // Set loading to false when login is complete
+      setLoading(false);
     }
   };
 
@@ -46,7 +39,7 @@ const LoginForm = ({ handleGoogleSignIn }) => {
         Login
       </Typography>
 
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLoginCall}>
         <TextField
           fullWidth
           margin="normal"

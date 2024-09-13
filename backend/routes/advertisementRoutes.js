@@ -17,10 +17,10 @@ router.get(
 router.get("/user", advertisementController.getUserAdvertisements);
 
 // GET: Get a single advertisement by ID
-// router.get("/:id", advertisementController.getAdvertisementById);
+router.get("/:id", advertisementController.getAdvertisementById);
 
 // PATCH: Update an advertisement by ID
-// router.patch("/:id", advertisementController.updateAdvertisement);
+router.patch("/:id", advertisementController.updateAdvertisement);
 
 // DELETE: Delete an advertisement by ID
 router.delete(

@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { PERMISSION } from "../config/features";
 
 export const isTokenExpired = () => {
   const token = localStorage.getItem("token");
@@ -11,16 +12,36 @@ export const isTokenExpired = () => {
   return decodedToken.exp < currentTime;
 };
 
+// Role identifier
+export const ROLE_IDENTIFIERS = {
+  ADMIN: { ROLE_NAME: "Admin", ROLE_DOMAIN: "@voiaxisadmin.com" },
+  MODERATOR: { ROLE_NAME: "Moderator", ROLE_DOMAIN: "@voiaxismoderator.com" },
+  USER: { ROLE_NAME: "User", ROLE_DOMAIN: "@gmail.com" },
+};
+
 // Possible roles
-export const roles = [
-  { id: 1, role: "Admin", color: "primary", domain: "@voiaxisadmin.com" },
+export const ROLES = [
+  {
+    id: 1,
+    role: ROLE_IDENTIFIERS.ADMIN.ROLE_NAME,
+    color: "primary",
+    domain: ROLE_IDENTIFIERS.ADMIN.ROLE_DOMAIN,
+    permissions: [PERMISSION.DELETE_AD, PERMISSION.REVIEW_AD],
+  },
   {
     id: 2,
-    role: "Moderator",
+    role: ROLE_IDENTIFIERS.MODERATOR.ROLE_NAME,
     color: "secondary",
-    domain: "@voiaxismoderator.com",
+    domain: ROLE_IDENTIFIERS.MODERATOR.ROLE_DOMAIN,
+    permissions: [PERMISSION.REVIEW_AD],
   },
-  { id: 3, role: "User", color: "secondary", domain: "@gmail.com" },
+  {
+    id: 3,
+    role: ROLE_IDENTIFIERS.USER.ROLE_NAME,
+    color: "secondary",
+    domain: ROLE_IDENTIFIERS.USER.ROLE_DOMAIN,
+    permissions: [],
+  },
 ];
 
 // Auto-assign role based on email domain

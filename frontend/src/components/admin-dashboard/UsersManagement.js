@@ -8,7 +8,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import axiosInstance from "../../config/axiosInstance";
-import { assignRole, roles } from "../../utils/_helpers";
+import { assignRole, ROLES } from "../../utils/_helpers";
 import { toast } from "react-toastify";
 
 const UsersManagement = () => {
@@ -40,11 +40,15 @@ const UsersManagement = () => {
       const splitEmail = user.email.split("@");
       const emailWithUpdatedRole = `${splitEmail[0]}${newRole.domain}`;
 
+      //Update permissions based on new role
+      const permissionsWithUpdatedRole = newRole.permissions;
+
       //Payload for update the role of user
       const payload = {
         email: emailWithUpdatedRole,
+        permissions: permissionsWithUpdatedRole,
       };
-      const response = await axiosInstance.patch(`/user/${user._id}`, payload);
+      await axiosInstance.patch(`/user/${user._id}`, payload);
       toast.success("Role updated successfully");
       fetchUsers();
     } catch (error) {
@@ -73,7 +77,7 @@ const UsersManagement = () => {
                 }}
               >
                 {/* Render role buttons dynamically */}
-                {roles.map((role) => {
+                {ROLES.map((role) => {
                   // Skip rendering the button if it's the user's current role
                   if (role.role === user.role) return null;
                   return (

@@ -11,7 +11,7 @@ import { Delete, Visibility } from "@mui/icons-material";
 import axiosInstance from "../../config/axiosInstance";
 import { toast } from "react-toastify";
 import AdvertisementDetails from "./AdvertisementDetails";
-import { checkPermission } from "../../config/features";
+import { checkPermission, PERMISSION } from "../../config/features";
 import { useUser } from "../../context/userContext";
 
 const AdvertisementTable = () => {
@@ -36,7 +36,13 @@ const AdvertisementTable = () => {
     fetchAdvertisements();
   }, []);
 
-  const handleOpenModal = (ad) => {
+  const handleViewAdvertisement = (ad) => {
+    if (!checkPermission(user.allowedPermissions, PERMISSION.REVIEW_AD)) {
+      toast.error(
+        "You don't have permission to review advertisement! Please contact with your admin."
+      );
+      return;
+    }
     setSelectedAd(ad);
     setOpen(true);
   };
@@ -47,7 +53,7 @@ const AdvertisementTable = () => {
   };
 
   const handleDeleteAdvertisement = async (id) => {
-    if (!checkPermission(user.allowedPermissions, 1000)) {
+    if (!checkPermission(user.allowedPermissions, PERMISSION.DELETE_AD)) {
       toast.error(
         "You don't have permission to delete advertisement! Please contact with your admin."
       );
@@ -92,7 +98,7 @@ const AdvertisementTable = () => {
                 <IconButton
                   color="primary"
                   aria-label="view"
-                  onClick={() => handleOpenModal(ad)}
+                  onClick={() => handleViewAdvertisement(ad)}
                 >
                   <Visibility />
                 </IconButton>

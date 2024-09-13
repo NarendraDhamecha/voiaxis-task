@@ -10,7 +10,7 @@ import { Google as GoogleIcon } from "@mui/icons-material";
 import axiosInstance from "../../config/axiosInstance";
 import { toast } from "react-toastify";
 
-const SignupForm = ({ handleGoogleSignIn, setTab }) => {
+const SignupForm = ({ handleGoogleSignIn, handleLogin }) => {
   const [signupData, setSignupData] = useState({
     fullName: "",
     mobileNo: "",
@@ -74,7 +74,13 @@ const SignupForm = ({ handleGoogleSignIn, setTab }) => {
         toast.success(
           `Welcome, ${response.data.data.fullName}! Your account has been created successfully.`
         );
-        setTab(0);
+
+        //Login with same creds
+        const loginData = {
+          email: response.data.data.email,
+          password: signupData.password,
+        };
+        await handleLogin(event, loginData);
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {

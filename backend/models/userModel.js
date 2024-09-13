@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   mobileNo: { type: String, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
-  firebaseUid: { type: String, unique: true },
+  firebaseUid: { type: String },
   permissions: { type: mongoose.Schema.Types.Mixed },
 });
 

@@ -9,7 +9,8 @@ import {
 } from "../config/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import SignupForm from "../components/auth/SignupForm";
-import { getUser } from "../utils/_helpers";
+import { getUser, ROLE_IDENTIFIERS } from "../utils/_helpers";
+import { toast } from "react-toastify";
 
 const Auth = () => {
   const [tab, setTab] = useState(0);
@@ -32,7 +33,7 @@ const Auth = () => {
       });
       localStorage.setItem("token", response.data.token);
       const { role } = getUser(response.data.token);
-      console.log(role)
+      console.log(role);
       if (role === "User") {
         navigate("/user/create-advertisement");
       } else {
@@ -40,6 +41,23 @@ const Auth = () => {
       }
     } catch (error) {
       console.error("Google Sign-In Error:", error);
+    }
+  };
+
+  // Handle Login form submission
+  const handleLogin = async (event, loginData) => {
+    event.preventDefault();
+    try {
+      const response = await axiosInstance.post("auth/login", loginData);
+      localStorage.setItem("token", response.data.token);
+      const { role } = getUser(response.data.token);
+      if (role === ROLE_IDENTIFIERS.USER.ROLE_NAME) {
+        navigate("/user/create-advertisement");
+      } else {
+        navigate("/user/admin/dashboard");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   };
 
@@ -58,11 +76,16 @@ const Auth = () => {
         </Tabs>
 
         <Stack spacing={2} sx={{ mt: 3 }}>
-          {tab === 0 && <LoginForm handleGoogleSignIn={handleGoogleSignIn} />}
+          {tab === 0 && (
+            <LoginForm
+              handleGoogleSignIn={handleGoogleSignIn}
+              handleLogin={handleLogin}
+            />
+          )}
           {tab === 1 && (
             <SignupForm
               handleGoogleSignIn={{ handleGoogleSignIn }}
-              setTab={setTab}
+              handleLogin={handleLogin}
             />
           )}
         </Stack>

@@ -34,20 +34,20 @@ exports.getAdvertisements = async (req, res) => {
   }
 };
 
-// // GET: Get a single advertisement by ID
-// exports.getAdvertisementById = async (req, res) => {
-//   try {
-//     const advertisement = await Advertisement.findById(req.params.id);
+// GET: Get a single advertisement by ID
+exports.getAdvertisementById = async (req, res) => {
+  try {
+    const advertisement = await Advertisement.findById(req.params.id);
 
-//     if (!advertisement) {
-//       return res.status(404).json({ message: "Advertisement not found" });
-//     }
+    if (!advertisement) {
+      return res.status(404).json({ message: "Advertisement not found" });
+    }
 
-//     res.status(200).json(advertisement);
-//   } catch (error) {
-//     res.status(500).json({ message: "Error retrieving advertisement", error });
-//   }
-// };
+    res.status(200).json(advertisement);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving advertisement", error });
+  }
+};
 
 //GET: Get all advertisements posted by the authenticated user
 exports.getUserAdvertisements = async (req, res) => {
@@ -60,25 +60,25 @@ exports.getUserAdvertisements = async (req, res) => {
   }
 };
 
-// // PATCH: Update an advertisement by ID
-// exports.updateAdvertisement = async (req, res) => {
-//   try {
-//     const updatedData = req.body;
-//     const advertisement = await Advertisement.findByIdAndUpdate(
-//       req.params.id,
-//       updatedData,
-//       { new: true } // This option ensures the updated document is returned
-//     );
+// PATCH: Update an advertisement by ID
+exports.updateAdvertisement = async (req, res) => {
+  try {
+    const updatedData = req.body;
+    const advertisement = await Advertisement.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      { new: true } // This option ensures the updated document is returned
+    );
 
-//     if (!advertisement) {
-//       return res.status(404).json({ message: "Advertisement not found" });
-//     }
+    if (!advertisement) {
+      return res.status(404).json({ message: "Advertisement not found" });
+    }
 
-//     res.status(200).json(advertisement);
-//   } catch (error) {
-//     res.status(500).json({ message: "Error updating advertisement", error });
-//   }
-// };
+    res.status(200).json(advertisement);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating advertisement", error });
+  }
+};
 
 // DELETE: Delete an advertisement by ID
 exports.deleteAdvertisement = async (req, res) => {
